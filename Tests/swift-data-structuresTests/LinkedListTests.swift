@@ -9,14 +9,31 @@ import XCTest
 
 @testable import swift_data_structures
 
-extension LinkedList where T:Hashable {
+
+extension LinkedList {
     
-    func deDuplicate() -> Self {
-        removeDuplicates()
+    func xcRemove(kthFromEnd k: UInt) -> Self {
+        remove(kthFromEnd: k)
         return self
     }
     
-    func deDuplicate2() -> Self {
+    func xcRemove2(kthFromEnd k: UInt) -> Self {
+        remove2(kthFromEnd: k)
+        return self
+    }
+}
+
+extension LinkedList where T:Comparable {
+    
+    func xcRemoveDuplicates() -> Self {
+        removeDuplicates()
+        return self
+    }
+}
+
+extension LinkedList where T:Hashable {
+    
+    func xcRemoveDuplicates2() -> Self {
         removeDuplicates2()
         return self
     }
@@ -25,15 +42,12 @@ extension LinkedList where T:Hashable {
 final class LinkedListTests: XCTestCase {
 
     func test_appends_to_singly_linked_list() {
-        
         let list = LinkedList<Int>()
-        
         XCTAssertEqual(list.count, 0)
         
         list.append(data: 2)
         list.append(data: 4)
         list.append(data: 6)
-        
         XCTAssertEqual(list.count, 3)
     }
     
@@ -44,16 +58,31 @@ final class LinkedListTests: XCTestCase {
     }
     
     func test_remove_duplicates_from_singly_linked_list() {
-        XCTAssertEqual(LinkedList(2, 4, 2, 6, 6, 6, 7).deDuplicate().map { $0 }, [2, 4, 6, 7])
-        XCTAssertEqual(LinkedList(1, 2, 2, 2, 6).deDuplicate().map { $0 }, [1, 2, 6])
-        XCTAssertEqual(LinkedList(1).deDuplicate().map { $0 }, [1])
-        XCTAssertEqual(LinkedList<Int>().deDuplicate().map { $0 }, [])
+        XCTAssertEqual(LinkedList(2, 4, 2, 6, 6, 6, 7).xcRemoveDuplicates().map { $0 }, [2, 4, 6, 7])
+        XCTAssertEqual(LinkedList(1, 2, 2, 2, 6).xcRemoveDuplicates().map { $0 }, [1, 2, 6])
+        XCTAssertEqual(LinkedList(1).xcRemoveDuplicates().map { $0 }, [1])
+        XCTAssertEqual(LinkedList<Int>().xcRemoveDuplicates().map { $0 }, [])
     }
     
     func test_remove_duplicates_from_singly_linked_list2() {
-        XCTAssertEqual(LinkedList(2, 4, 2, 6, 6, 6, 7).deDuplicate2().map { $0 }, [2, 4, 6, 7])
-        XCTAssertEqual(LinkedList(1, 2, 2, 2, 6).deDuplicate2().map { $0 }, [1, 2, 6])
-        XCTAssertEqual(LinkedList(1).deDuplicate2().map { $0 }, [1])
-        XCTAssertEqual(LinkedList<Int>().deDuplicate2().map { $0 }, [])
+        XCTAssertEqual(LinkedList(2, 4, 2, 6, 6, 6, 7).xcRemoveDuplicates2().map { $0 }, [2, 4, 6, 7])
+        XCTAssertEqual(LinkedList(1, 2, 2, 2, 6).xcRemoveDuplicates2().map { $0 }, [1, 2, 6])
+        XCTAssertEqual(LinkedList(1).xcRemoveDuplicates2().map { $0 }, [1])
+        XCTAssertEqual(LinkedList<Int>().xcRemoveDuplicates2().map { $0 }, [])
+    }
+    
+    
+    func test_removes_kth_element_from_end() {
+        XCTAssertEqual(LinkedList(1).xcRemove(kthFromEnd: 0).map { $0 }, [])
+        XCTAssertEqual(LinkedList(1, 2).xcRemove(kthFromEnd: 1).map { $0 }, [2])
+        XCTAssertEqual(LinkedList(1, 2, 3).xcRemove(kthFromEnd: 1).map { $0 }, [1, 3])
+        XCTAssertEqual(LinkedList(1, 2, 3).xcRemove(kthFromEnd: 2).map { $0 }, [2, 3])
+    }
+    
+    func test_removes_kth_element_from_end2() {
+        XCTAssertEqual(LinkedList(1).xcRemove2(kthFromEnd: 0).map { $0 }, [])
+        XCTAssertEqual(LinkedList(1, 2).xcRemove2(kthFromEnd: 1).map { $0 }, [2])
+        XCTAssertEqual(LinkedList(1, 2, 3).xcRemove2(kthFromEnd: 1).map { $0 }, [1, 3])
+        XCTAssertEqual(LinkedList(1, 2, 3).xcRemove2(kthFromEnd: 2).map { $0 }, [2, 3])
     }
 }
