@@ -21,6 +21,11 @@ extension LinkedList {
         remove2(kthFromEnd: k)
         return self
     }
+    
+    func xcRemoveMiddle() -> Self {
+        removeMiddle()
+        return self
+    }
 }
 
 extension LinkedList where T:Comparable {
@@ -84,5 +89,13 @@ final class LinkedListTests: XCTestCase {
         XCTAssertEqual(LinkedList(1, 2).xcRemove2(kthFromEnd: 1).map { $0 }, [2])
         XCTAssertEqual(LinkedList(1, 2, 3).xcRemove2(kthFromEnd: 1).map { $0 }, [1, 3])
         XCTAssertEqual(LinkedList(1, 2, 3).xcRemove2(kthFromEnd: 2).map { $0 }, [2, 3])
+    }
+    
+    func test_removes_middle_element() {
+        XCTAssertEqual(LinkedList<Int>().xcRemoveMiddle().map { $0 }, [])
+        XCTAssertEqual(LinkedList(1).xcRemoveMiddle().map { $0 }, [1])
+        XCTAssertEqual(LinkedList(1,2).xcRemoveMiddle().map { $0 }, [1,2])
+        XCTAssertEqual(LinkedList(1,2,3).xcRemoveMiddle().map { $0 }, [1,3])
+        XCTAssertEqual(LinkedList(1,2,3,4).xcRemoveMiddle().map { $0 }, [1,3,4])
     }
 }
