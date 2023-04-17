@@ -65,12 +65,6 @@ public class LinkedList<T> {
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 extension LinkedList: Sequence {
     
-    /*
-    public func makeIterator() -> LinkedListIterator<T> {
-        LinkedListIterator(head: head)
-    }*/
-    
-    
     public func makeIterator() -> some IteratorProtocol<T> {
         LinkedListIterator(head: head)
     }
@@ -172,6 +166,42 @@ extension LinkedList {
         } else {
             let prev = nodes[index-1]
             prev.next = prev.next?.next
+        }
+    }
+}
+
+extension LinkedList {
+    
+    /// Removes an element placed in the middle of the list.
+    ///
+    /// If number of elements in the list is not greater than 2 then nothing is removed.
+    /// If number of elements is even then element with index = (count/2)-1 is the middle element.
+    ///
+    ///     let list = LinkedList(1, 2, 3, 4)
+    ///     list.removeMiddle()
+    ///     // Contains: 1, 3, 4
+    ///     list.removeMiddle()
+    ///     // Contains: 1, 4
+    ///     list.removeMiddle()
+    ///     // Contains: 1, 4
+    ///
+    /// - Complexity: time - O(n) where n is the number of elements, space - O(1)
+    ///
+    func removeMiddle() {
+        let count = count
+        guard count > 2 else { return }
+        let indexToRemove = ((count%2 == 0) ? count-1 : count) / 2
+        
+        var runner = head
+        var index = 0
+        while let r = runner {
+            index += 1
+            if index == indexToRemove {
+                r.next = r.next?.next
+                return
+            } else {
+                runner = r.next
+            }
         }
     }
 }
