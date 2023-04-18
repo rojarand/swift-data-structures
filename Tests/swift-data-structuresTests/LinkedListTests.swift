@@ -98,4 +98,32 @@ final class LinkedListTests: XCTestCase {
         XCTAssertEqual(LinkedList(1,2,3).xcRemoveMiddle().map { $0 }, [1,3])
         XCTAssertEqual(LinkedList(1,2,3,4).xcRemoveMiddle().map { $0 }, [1,3,4])
     }
+    
+    func test_partitions_linked_list_with_many_elements_around_given_value() {
+        let linkedList = LinkedList(3,5,8,5,10,2,1)
+        let higherPart = linkedList.partition(around: 5)
+        XCTAssertEqual(linkedList.map { $0 }, [3,2,1])
+        XCTAssertEqual(higherPart.map { $0 }, [5,8,5,10])
+    }
+    
+    func test_partitions_linked_list_with_two_elements_around_high_value() {
+        let linkedList = LinkedList(3,5)
+        let higherPart = linkedList.partition(around: 6)
+        XCTAssertEqual(linkedList.map { $0 }, [3,5])
+        XCTAssertEqual(higherPart.map { $0 }, [])
+    }
+    
+    func test_partitions_linked_list_with_two_elements_around_low_value() {
+        let linkedList = LinkedList(3,5)
+        let higherPart = linkedList.partition(around: 0)
+        XCTAssertEqual(linkedList.map { $0 }, [])
+        XCTAssertEqual(higherPart.map { $0 }, [3,5])
+    }
+    
+    func test_partitions_linked_list_with_one_element_around_low_value() {
+        let linkedList = LinkedList(3)
+        let otherPart = linkedList.partition(around: 0)
+        XCTAssertEqual(linkedList.map { $0 }, [])
+        XCTAssertEqual(otherPart.map { $0 }, [3])
+    }
 }

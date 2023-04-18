@@ -31,6 +31,10 @@ public class LinkedList<T> {
         }
     }
     
+    internal init(head: Node<T>?) {
+        self.head = head
+    }
+    
     public func append(data: T) {
         let next = Node(data: data)
         if let last {
@@ -203,5 +207,40 @@ extension LinkedList {
                 runner = r.next
             }
         }
+    }
+}
+
+extension LinkedList where T: Comparable {
+    
+    func partition(around data: T) -> LinkedList<T> {
+        var head1: Node<T>?
+        var tail1: Node<T>?
+        var head2: Node<T>?
+        var tail2: Node<T>?
+        
+        var runner = head
+        while let current = runner {
+            runner = current.next
+            current.next = nil
+            if current.data < data {
+                if head1 == nil {
+                    head1 = current
+                    tail1 = head1
+                } else {
+                    tail1?.next = current
+                    tail1 = tail1?.next
+                }
+            } else {
+                if head2 == nil {
+                    head2 = current
+                    tail2 = head2
+                } else {
+                    tail2?.next = current
+                    tail2 = tail2?.next
+                }
+            }
+        }
+        head = head1
+        return LinkedList(head: head2)
     }
 }
